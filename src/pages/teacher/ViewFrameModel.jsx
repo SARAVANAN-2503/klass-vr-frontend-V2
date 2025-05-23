@@ -5,21 +5,20 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import ContentWrapper from "../../components/ContentWrapper";
 
-// ✅ Construct proper URLs for Unity WebGL build assets
 const loaderUrl = new URL(
-  "../../assets/WEBGLbuild/Build86.loader.js",
+  "../../../public/assets/WEBGLbuild/Build86.loader.js",
   import.meta.url
 ).href;
 const dataUrl = new URL(
-  "../../assets/WEBGLbuild/build86.data.unityweb",
+  "../../../public/assets/WEBGLbuild/Build86.data.unityweb",
   import.meta.url
 ).href;
 const frameworkUrl = new URL(
-  "../../assets/WEBGLbuild/build86.framework.js.unityweb",
+  "../../../public/assets/WEBGLbuild/Build86.framework.js.unityweb",
   import.meta.url
 ).href;
 const codeUrl = new URL(
-  "../../assets/WEBGLbuild/build86.wasm.unityweb",
+  "../../../public/assets/WEBGLbuild/Build86.wasm.unityweb",
   import.meta.url
 ).href;
 
