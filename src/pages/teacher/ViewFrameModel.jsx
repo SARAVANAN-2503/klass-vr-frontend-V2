@@ -7,19 +7,19 @@ import ContentWrapper from "../../components/ContentWrapper";
 
 // ✅ Construct proper URLs for Unity WebGL build assets
 const loaderUrl = new URL(
-  "../../../public/assets/WEBGLbuild/Build86.loader.js",
+  "../../assets/WEBGLbuild/Build86.loader.js",
   import.meta.url
 ).href;
 const dataUrl = new URL(
-  "../../../public/assets/WEBGLbuild/build86.data.unityweb",
+  "../../assets/WEBGLbuild/build86.data.unityweb",
   import.meta.url
 ).href;
 const frameworkUrl = new URL(
-  "../../../public/assets/WEBGLbuild/build86.framework.js.unityweb",
+  "../../assets/WEBGLbuild/build86.framework.js.unityweb",
   import.meta.url
 ).href;
 const codeUrl = new URL(
-  "../../../public/assets/WEBGLbuild/build86.wasm.unityweb",
+  "../../assets/WEBGLbuild/build86.wasm.unityweb",
   import.meta.url
 ).href;
 
