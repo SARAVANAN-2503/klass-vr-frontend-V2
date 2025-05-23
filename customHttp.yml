@@ -1,0 +1,21 @@
+version: 1
+paths:
+  "/assets/WEBGLbuild/*.js.unityweb":
+    headers:
+      - key: Content-Type
+        value: application/javascript
+
+  "/assets/WEBGLbuild/*.wasm.unityweb":
+    headers:
+      - key: Content-Type
+        value: application/wasm
+
+  "/assets/WEBGLbuild/*.data.unityweb":
+    headers:
+      - key: Content-Type
+        value: application/octet-stream
+
+  "/assets/WEBGLbuild/*":
+    headers:
+      - key: Cache-Control
+        value: public, max-age=31536000, immutable
