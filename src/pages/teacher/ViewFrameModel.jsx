@@ -49,6 +49,7 @@ const ViewFrameModel = () => {
 
   useEffect(() => {
     if (isLoaded) {
+      setLoading(true);
       syncWithReactApi();
     }
 
