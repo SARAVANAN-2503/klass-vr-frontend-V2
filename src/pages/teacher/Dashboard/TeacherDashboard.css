@@ -1,0 +1,20 @@
+.light .apexcharts-yaxis-title,
+.light .apexcharts-xaxis-title {
+  color: #000000 !important;
+  .apexcharts-text.apexcharts-yaxis-title-text,
+  .apexcharts-text.apexcharts-xaxis-title-text {
+    color: #000000 !important;
+    fill: #000000 !important;
+  }
+
+}
+
+.dark .apexcharts-yaxis-title,
+.dark .apexcharts-xaxis-title {
+  color: #ffffff !important;
+  .apexcharts-text.apexcharts-yaxis-title-text,
+  .apexcharts-text.apexcharts-xaxis-title-text {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+  }
+}

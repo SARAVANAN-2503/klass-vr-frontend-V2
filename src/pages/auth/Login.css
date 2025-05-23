@@ -1,0 +1,75 @@
+.login_container {
+  min-height: 100vh;
+  max-height: 100vh;
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  background: #8286c5;
+}
+
+.login_wrp {
+  height: calc(100vh - 5rem);
+  margin: 2.5rem 3rem;
+  display: flex;
+  background: #fff;
+  padding: 10px;
+  border-radius: 20px;
+  align-items: center;
+  width: 100%;
+  margin: 2rem;
+}
+
+.login_form_wrp {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5%;
+  width: 35%;
+  max-width: 25%;
+  margin: 0 auto;
+  height: 100%;
+}
+
+.login_form_wrp > img {
+  width: 25%;
+}
+
+.login_form_wrp > form {
+  width: 100%;
+}
+
+.login_banner_wrp {
+  height: 100%;
+  width: 100%;
+  width: 65%;
+}
+
+.login_banner {
+  height: 100%;
+  background-image: url("../../assets/login_banner.png");
+  background-size: cover;
+  background-position: top;
+  border-radius: 12px;
+  background-repeat: no-repeat;
+  width: 100%;
+}
+
+.login_logo {
+  height: 65px;
+  width: 60%;
+  background-image: url("../../assets/blackandwhite.png");
+  background-size: contain;
+  border-radius: 10px;
+  background-repeat: no-repeat;
+  background-position: top;
+}
+
+.login-header-text {
+  font-family: "Poppins", serif !important;
+  /* font-weight: 900 !important;
+  span {
+    font-weight: 900 !important;
+  } */
+}

@@ -1,0 +1,160 @@
+.static-images-container {
+  position: sticky;
+  top: 0; /* Add a background color if necessary */
+  z-index: 100; /* Set a z-index to ensure it's above other elements */
+}
+.video-player-container {
+  position: relative;
+  width: 100%; /* Set desired width */
+  height: 345px; /* Set desired height */
+  margin-bottom: 20px; /* Added some margin at the bottom */
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
+.react-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Deployment Modal Css */
+
+.deployment-grade-wrp {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  height: 600px;
+  img {
+    border-top-left-radius: 11px;
+    border-bottom-left-radius: 11px;
+    height: 100%;
+  }
+  .content {
+    padding: 1rem;
+    width: 100%;
+
+    .heading {
+      font-size: 24px;
+      width: 100% !important;
+      text-align: center !important;
+    }
+
+    .list-item-wrp {
+      padding: 0px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .list-items {
+      text-decoration: none;
+      padding: 12px;
+      border-radius: 30px;
+      border: 1px solid #190b291a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2%;
+      color: #000;
+
+      button {
+        background-color: #9a4bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        width: 24px;
+        height: 24px;
+        border-radius: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    .ant-col.ant-col-8.ant-form-item-label.css-dev-only-do-not-override-1vcpoz {
+      text-align: left;
+      width: max-content;
+    }
+  }
+}
+
+.active-inactive-wrp {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  height: 600px;
+  img {
+    border-top-left-radius: 11px;
+    border-bottom-left-radius: 11px;
+    height: 100%;
+  }
+  .active-inactive-content {
+    padding: 1rem;
+    width: 50%;
+    height: 100dvh;
+
+    .heading {
+      font-size: 24px;
+      width: 100% !important;
+      text-align: center !important;
+    }
+  }
+
+  .deploy_device_status_card {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: #f8e4f2;
+    cursor: pointer;
+
+    p {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0;
+    }
+  }
+  .deploy_device_status_card > p {
+    background: #fff;
+    min-width: 65px;
+    min-height: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+  }
+  .deploy_device_status_card.active {
+    background-color: #e4f8f0;
+  }
+  .deploy_device_status_card.active > p {
+    color: #008952;
+    box-shadow: 0px 6px 24px 4px #c8eadc;
+  }
+  .deploy_device_status_card.inactive > p {
+    color: #ff489b;
+    box-shadow: 0px 6px 24px 4px #eec7e2;
+  }
+  .deploy_device_status_card.inactive {
+    background-color: #f8e4f2;
+    .status {
+      p:nth-child(2) {
+        color: #00000080;
+      }
+    }
+  }
+}
+
+.dark .apexcharts-tooltip.apexcharts-theme-light {
+  background: rgba(55, 55, 55, 0.96);
+}
+
+.dark .apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-title {
+  background: #686868;
+}
+
+/* :where(.css-dev-only-do-not-override-11byqc5).ant-card-bordered {
+  border: unset !important;
+} */
