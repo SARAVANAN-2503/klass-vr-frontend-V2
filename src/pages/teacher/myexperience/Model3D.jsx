@@ -528,7 +528,7 @@ const Model3D = ({ handleBack, handleClose, handleSave, content, _edit, setConte
           className="custom-close-button"
           footer={null}
         >
-          <Typography className="text-xl text-center pt-10">Add Modal</Typography>
+          <Typography className="text-xl text-center pt-10">Add 3D Model</Typography>
           <div className="flex justify-center">
             <Form
               name="basic"
@@ -647,7 +647,7 @@ const Model3D = ({ handleBack, handleClose, handleSave, content, _edit, setConte
         >
           <div className="py-5 px-3">
             <div className="flex flex-col items-center justify-between p-4">
-              <Typography className="text-xl pt-5 m-0">Select Model</Typography>
+              <Typography className="text-xl pt-5 m-0">Select 3D Model</Typography>
               <div className="flex items-center justify-between mt-7">
                 <div className="flex gap-4">
                   <Input

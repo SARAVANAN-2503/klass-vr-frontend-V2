@@ -25,7 +25,7 @@ const codeUrl = new URL(
 const ViewFrameModel = () => {
   const Nav = useNavigate();
   const location = useLocation();
-  const { _id, contentId, model, token, modelId, sessionId, modelCoordinates } =
+  const { contentId, model, token, modelId, sessionId, modelCoordinates } =
     location.state;
 
   const { unityProvider, sendMessage, loadingProgression, isLoaded } =
@@ -38,7 +38,6 @@ const ViewFrameModel = () => {
 
   const [intervalExecuted, setIntervalExecuted] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const syncWithReactApi = useCallback(() => {
     sendMessage(
       "ApiManager",
@@ -49,73 +48,68 @@ const ViewFrameModel = () => {
 
   useEffect(() => {
     if (isLoaded) {
-      setLoading(true);
       syncWithReactApi();
     }
-
+    syncWithReactApi();
     const intervalId = setInterval(() => {
       if (!intervalExecuted) {
         setLoading(true);
         syncWithReactApi();
-        setIntervalExecuted(true);
+        setIntervalExecuted(false);
         clearInterval(intervalId);
       }
-    }, 2500);
+    }, 2500); // Set interval to run every 1 second
 
     return () => {
-      clearInterval(intervalId);
+      clearInterval(intervalId); // Cleanup interval on component unmount
     };
-  }, [syncWithReactApi, isLoaded, intervalExecuted]);
+  }, [syncWithReactApi, intervalExecuted]);
 
   const goBack = () => {
-    Nav(`/viewmyexperience/${_id}`);
+    Nav(`/viewmyexperience/${sessionId}`);
   };
 
   return loading ? (
-    <ContentWrapper>
-      <div className="text-start">
-        <Card
-          title={
-            <div className="flex gap-3 items-center">
-              <Button
-                icon={<ArrowLeftOutlined />}
-                size="default"
-                type="primary"
-                onClick={goBack}
-              >
-                Back
-              </Button>
-            </div>
-          }
-        >
-          <div
-            className="canvas-container"
-            style={{ height: "calc(100vh - 53px)" }}
-          >
-            <Fragment>
-              {!isLoaded && (
-                <p>
-                  Loading Application... {Math.round(loadingProgression * 100)}%
-                </p>
-              )}
-              <Unity
-                unityProvider={unityProvider}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  border: "none",
-                  visibility: isLoaded ? "visible" : "hidden",
-                }}
-              />
-            </Fragment>
+    <div className="text-start">
+      <Card
+        title={
+          <div className="flex gap-3 items-center">
+            <Button
+              icon={<ArrowLeftOutlined />}
+              size="default"
+              type="primary"
+              onClick={goBack}
+            >
+              Back
+            </Button>
           </div>
-        </Card>
-      </div>
-    </ContentWrapper>
-  ) : (
-    <div className="w-full h-[100vh] flex justify-center items-center">
-      <Spin size="large" />
+        }
+      >
+        <div
+          className="canvas-container" // Consider using a more descriptive class name
+          style={{ height: "calc(100vh - 53px)" }}
+        >
+          <Fragment>
+            {!isLoaded && (
+              <p>
+                Loading Application... {Math.round(loadingProgression * 100)}%
+              </p>
+            )}
+            <Unity
+              unityProvider={unityProvider}
+              style={{
+                width: "100%",
+                height: "100%",
+                border: "none",
+                visibility: isLoaded ? "visible" : "hidden",
+              }}
+            />
+          </Fragment>
+        </div>
+      </Card>
     </div>
+  ) : (
+    <Spin tip="Loading Application..." size="large"></Spin>
   );
 };
 
