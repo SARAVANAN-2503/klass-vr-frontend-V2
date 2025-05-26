@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import UserDetailsCard from "../components/UserDetailsCard";
 import { useSelector } from "react-redux";
 import { DesktopOutlined } from "@ant-design/icons";
+import { useEffect } from "react";
 
 const { Sider } = Layout;
 
@@ -23,9 +24,19 @@ const CommonLayout = ({ children }) => {
     const isSelected = selectedMenu === path;
 
     if (selectedTheme == "light") {
-      return <SidebarIcons path={path} fill={isSelected || parent ? "#fff" : "#000"} />;
+      return (
+        <SidebarIcons
+          path={path}
+          fill={isSelected || parent ? "#fff" : "#000"}
+        />
+      );
     } else {
-      return <SidebarIcons path={path} fill={isSelected || parent ? "gradient" : "#fff"} />;
+      return (
+        <SidebarIcons
+          path={path}
+          fill={isSelected || parent ? "gradient" : "#fff"}
+        />
+      );
     }
   };
   // Menu items with dynamic routing and icons
@@ -148,13 +159,25 @@ const CommonLayout = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    const menuList = getMenuItems();
+    const activemenu = menuList.find(
+      (item) => item?.label?.props?.to === window.location.pathname
+    );
+    if (activemenu) dispatch(setSelectedMenu(activemenu.key));
+  }, [window.location.pathname]);
+
   // Handle menu item clicks
   const handleMenuClick = (e) => {
     dispatch(setSelectedMenu(e.key));
   };
 
   return (
-    <Layout className={`layout-wrp ${selectedTheme} ${isCollapsed ? "collapsed" : "expanded"}`}>
+    <Layout
+      className={`layout-wrp ${selectedTheme} ${
+        isCollapsed ? "collapsed" : "expanded"
+      }`}
+    >
       <ThemeSwitcher />
       {/* <LanguageSwitcher /> */}
       <div className={`sidebar-wrp ${selectedTheme}`}>
@@ -164,7 +187,10 @@ const CommonLayout = ({ children }) => {
               title={selectedTheme === "light" ? "Light" : "Dark"}
               placement="top"
             > */}
-            <img src={selectedTheme === "light" ? lightLogo : darkLogo} alt="logo" />
+            <img
+              src={selectedTheme === "light" ? lightLogo : darkLogo}
+              alt="logo"
+            />
             {/* </Tooltip> */}
           </div>
           <Sider trigger={null} collapsible collapsed={false}>
@@ -177,7 +203,11 @@ const CommonLayout = ({ children }) => {
               {getMenuItems().map((item) => {
                 if (item.children) {
                   return (
-                    <Menu.SubMenu key={item.key} icon={item.icon} title={item.label}>
+                    <Menu.SubMenu
+                      key={item.key}
+                      icon={item.icon}
+                      title={item.label}
+                    >
                       {item.children.map((child) => (
                         <Menu.Item key={child.key} icon={child.icon}>
                           {child.label}

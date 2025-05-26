@@ -51,9 +51,10 @@ const AddMyExperience = () => {
 
     if (!hasVisited) {
       sessionStorage.setItem("hasVisited", "true");
-      window.location.reload();
+      // window.location.reload();
     }
   }, []);
+
   useEffect(() => {
     const handleBeforeUnload = () => {
       localStorage.removeItem("hasVisited");
@@ -120,7 +121,9 @@ const AddMyExperience = () => {
   const handlePatchContentUpdate = useCallback(
     async (contentId, contentDetails, keys, contentKey) => {
       const mappedDetails = Array.isArray(contentDetails)
-        ? contentDetails.map((item) => keys.reduce((acc, key) => ({ ...acc, [key]: item[key] }), {}))
+        ? contentDetails.map((item) =>
+            keys.reduce((acc, key) => ({ ...acc, [key]: item[key] }), {})
+          )
         : [];
 
       const updatedContent = { ...content, [contentKey]: mappedDetails };
@@ -137,7 +140,7 @@ const AddMyExperience = () => {
       setContentRes(updatedValue);
       setResponseValue((prev) => [...prev, { ...content, ...res }]);
     },
-    [content],
+    [content]
   );
 
   const handleContentSave = useCallback(async () => {
@@ -173,7 +176,11 @@ const AddMyExperience = () => {
         1: async () => {
           setAddLoader(true);
           const sessionData = session.id
-            ? { name: session.name, grade: session.grade, subject: session.subject }
+            ? {
+                name: session.name,
+                grade: session.grade,
+                subject: session.subject,
+              }
             : { ...session, isDraft: false };
 
           const sessionRes = session.id
@@ -221,10 +228,28 @@ const AddMyExperience = () => {
       if (["3", "4", "5", "6"].includes(activeKey)) {
         setAddLoader(true);
         const contentDetailsMap = {
-          3: { key: "videoDetails", keys: ["_id", "script", "VideoId", "videoSound"] },
-          4: { key: "imageDetails", keys: ["_id", "script", "ImageId", "displayTime"] },
-          5: { key: "modelDetails", keys: ["_id", "modelId", "modelCoordinates", "script", "displayTime"] },
-          6: { key: "simulationDetails", keys: ["_id", "script", "simulationId", "displayTime"] },
+          3: {
+            key: "videoDetails",
+            keys: ["_id", "script", "VideoId", "videoSound"],
+          },
+          4: {
+            key: "imageDetails",
+            keys: ["_id", "script", "ImageId", "displayTime"],
+          },
+          5: {
+            key: "modelDetails",
+            keys: [
+              "_id",
+              "modelId",
+              "modelCoordinates",
+              "script",
+              "displayTime",
+            ],
+          },
+          6: {
+            key: "simulationDetails",
+            keys: ["_id", "script", "simulationId", "displayTime"],
+          },
         };
 
         const { key, keys } = contentDetailsMap[activeKey];
@@ -233,7 +258,9 @@ const AddMyExperience = () => {
         nextTabKey = String(Number(activeKey) + 1);
       } else {
         setAddLoader(true);
-        nextTabKey = await (actions[activeKey] || (() => String(Number(activeKey) + 1)))();
+        nextTabKey = await (
+          actions[activeKey] || (() => String(Number(activeKey) + 1))
+        )();
       }
 
       handleTabChange(nextTabKey);
@@ -243,7 +270,15 @@ const AddMyExperience = () => {
     } finally {
       setFormLoader(false);
     }
-  }, [activeKey, assessment, content, contentId, handlePatchContentUpdate, handleTabChange, session]);
+  }, [
+    activeKey,
+    assessment,
+    content,
+    contentId,
+    handlePatchContentUpdate,
+    handleTabChange,
+    session,
+  ]);
 
   const handleSkip = useCallback(async () => {
     setAddLoader(true);
@@ -371,7 +406,11 @@ const AddMyExperience = () => {
               />
             </TabPane>
             <TabPane tab="3D Model Editor" key="8" disabled>
-              <Anotation responseValue={responseValue} contentRes={contentRes} sessionId={content.sessionId} />
+              <Anotation
+                responseValue={responseValue}
+                contentRes={contentRes}
+                sessionId={content.sessionId}
+              />
             </TabPane>
           </Tabs>
         </div>

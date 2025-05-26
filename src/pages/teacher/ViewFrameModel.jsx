@@ -4,6 +4,7 @@ import { Button, Card, Spin } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import ContentWrapper from "../../components/ContentWrapper";
+import { FaChevronLeft } from "react-icons/fa";
 
 const loaderUrl = new URL(
   "../../../public/assets/WEBGLbuild/Build86.loader.js",
@@ -25,9 +26,9 @@ const codeUrl = new URL(
 const ViewFrameModel = () => {
   const Nav = useNavigate();
   const location = useLocation();
-  const { contentId, model, token, modelId, sessionId, modelCoordinates } =
+  const { _id, contentId, model, token, modelId, sessionId, modelCoordinates } =
     location.state;
-
+  console.log(location.state);
   const { unityProvider, sendMessage, loadingProgression, isLoaded } =
     useUnityContext({
       loaderUrl,
@@ -66,50 +67,49 @@ const ViewFrameModel = () => {
   }, [syncWithReactApi, intervalExecuted]);
 
   const goBack = () => {
-    Nav(`/viewmyexperience/${sessionId}`);
+    Nav(`/viewmyexperience/${_id}`);
   };
 
   return loading ? (
-    <div className="text-start">
-      <Card
-        title={
-          <div className="flex gap-3 items-center">
-            <Button
-              icon={<ArrowLeftOutlined />}
-              size="default"
-              type="primary"
-              onClick={goBack}
+    <ContentWrapper
+      // className="glass-effect"
+      routeTo={`/viewmyexperience/${_id}`}
+      prefix={<FaChevronLeft />}
+      header="Add Annotations"
+    >
+      <div className="add-experience">
+        <div className="flex flex-col gap-4">
+          <Card>
+            <div
+              className="canvas-container" // Consider using a more descriptive class name
+              style={{ height: "calc(100vh - 53px)" }}
             >
-              Back
-            </Button>
-          </div>
-        }
-      >
-        <div
-          className="canvas-container" // Consider using a more descriptive class name
-          style={{ height: "calc(100vh - 53px)" }}
-        >
-          <Fragment>
-            {!isLoaded && (
-              <p>
-                Loading Application... {Math.round(loadingProgression * 100)}%
-              </p>
-            )}
-            <Unity
-              unityProvider={unityProvider}
-              style={{
-                width: "100%",
-                height: "100%",
-                border: "none",
-                visibility: isLoaded ? "visible" : "hidden",
-              }}
-            />
-          </Fragment>
+              <Fragment>
+                {!isLoaded && (
+                  <p>
+                    Loading Application...{" "}
+                    {Math.round(loadingProgression * 100)}%
+                  </p>
+                )}
+                <Unity
+                  unityProvider={unityProvider}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    border: "none",
+                    visibility: isLoaded ? "visible" : "hidden",
+                  }}
+                />
+              </Fragment>
+            </div>
+          </Card>
         </div>
-      </Card>
-    </div>
+      </div>
+    </ContentWrapper>
   ) : (
-    <Spin tip="Loading Application..." size="large"></Spin>
+    <div className="flex justify-center items-center w-screen min-h-dvh">
+      <Spin tip="Loading Application..." size="large"></Spin>
+    </div>
   );
 };
 

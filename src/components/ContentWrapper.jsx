@@ -32,7 +32,7 @@ const ContentWrapper = ({
             )}
             {/* <Tooltip title={isCollapsed ? "Expand the sidebar" : "Collapse the sidebar"}> */}
             <p
-            
+
             // onClick={() => dispatch(setIsCollapsed(!isCollapsed))}
             >
               {header}

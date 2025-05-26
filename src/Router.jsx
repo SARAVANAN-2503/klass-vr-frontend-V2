@@ -44,35 +44,113 @@ const Router = () => {
           path="/dashboard"
           element={<ProtectedRoute element={<Dashboard />} />}
         />
-        <Route path="/experience" element={<ProtectedRoute element={<AllExperience />} />}/>
+        <Route
+          path="/experience"
+          element={<ProtectedRoute element={<AllExperience />} />}
+        />
 
-        <Route path="/myexperience" element={<ProtectedRoute element={<MyExperience />} />}/>
-        <Route path="/editexperience/:id" element={<ProtectedRoute element={<EditMyExperience />} />}/>
-        <Route path="/admindashboard" element={<ProtectedRoute element={<AdminDashboard />} />}/>
-        <Route path="/model" element={<ProtectedRoute element={<Repository />} />}/>
-        <Route path="/video" element={<ProtectedRoute element={<Video />} />}/>
-        <Route path="/image" element={<ProtectedRoute element={<Image360 />} />}/>
-        <Route path="/simulation" element={<ProtectedRoute element={<Simulation />} />}/>
-        <Route path="/deviceconnect" element={<ProtectedRoute element={<DeviceConnect />} />}/>
-        <Route path="/video-view" element={<ProtectedRoute element={<VideoView />} />}/>
-        <Route path="/image-view" element={<ProtectedRoute element={<ImageView />} />}/>
-        <Route path="/model-view" element={<ProtectedRoute element={<RepoView />} />}/>
-        <Route path="/simulation-view" element={<ProtectedRoute element={<SimulationView />} />}/>
-        <Route path="/viewexperience/:id" element={<ProtectedRoute element={<ViewExperience />} />}/>
-        <Route path="/experienceList" element={<ProtectedRoute element={<Contucted />} />}/>
-        <Route path="/content_repo" element={<ProtectedRoute element={<ContentRepo />} />}/>
-        <Route path="/viewmyexperience/:id" element={<ProtectedRoute element={<ViewMyExperience />} />}/>
-        <Route path="/teacherDashboard" element={<ProtectedRoute element={<TeacherDashboard />} />}/>
-        <Route path="/_dashboard" element={<ProtectedRoute element={<SuperadminDashboard />} />}/>
-        <Route path="/client" element={<ProtectedRoute element={<Client />} />}/>
-        <Route path="/subscription" element={<ProtectedRoute element={<Subscription />} />}/>
-        <Route path="/client/:id" element={<ProtectedRoute element={<ViewClient />} />}/>
-        <Route path="/roles" element={<ProtectedRoute element={<Roles />} />}/>
-        <Route path="/unity" element={<ProtectedRoute element={<ViewFrameModel />} />}/>
-        <Route path="/AddExperience" element={<ProtectedRoute element={<AddMyExperience />} />}/>
-        <Route path="/devicemanagement" element={<ProtectedRoute element={<DeviceManagement />} />}/>
-        <Route path="/teachermanagement" element={<ProtectedRoute element={<TeacherManagement />} />}/>
-        <Route path="/studentmanagement" element={<ProtectedRoute element={<StudentManagement />} />}/>
+        <Route
+          path="/myexperience"
+          element={<ProtectedRoute element={<MyExperience />} />}
+        />
+        <Route
+          path="/editexperience/:id"
+          element={<ProtectedRoute element={<EditMyExperience />} />}
+        />
+        <Route
+          path="/admindashboard"
+          element={<ProtectedRoute element={<AdminDashboard />} />}
+        />
+        <Route
+          path="/model"
+          element={<ProtectedRoute element={<Repository />} />}
+        />
+        <Route path="/video" element={<ProtectedRoute element={<Video />} />} />
+        <Route
+          path="/image"
+          element={<ProtectedRoute element={<Image360 />} />}
+        />
+        <Route
+          path="/simulation"
+          element={<ProtectedRoute element={<Simulation />} />}
+        />
+        <Route
+          path="/deviceconnect"
+          element={<ProtectedRoute element={<DeviceConnect />} />}
+        />
+        <Route
+          path="/video-view"
+          element={<ProtectedRoute element={<VideoView />} />}
+        />
+        <Route
+          path="/image-view"
+          element={<ProtectedRoute element={<ImageView />} />}
+        />
+        <Route
+          path="/model-view"
+          element={<ProtectedRoute element={<RepoView />} />}
+        />
+        <Route
+          path="/simulation-view"
+          element={<ProtectedRoute element={<SimulationView />} />}
+        />
+        <Route
+          path="/viewexperience/:id"
+          element={<ProtectedRoute element={<ViewExperience />} />}
+        />
+        <Route
+          path="/experienceList"
+          element={<ProtectedRoute element={<Contucted />} />}
+        />
+        <Route
+          path="/content_repo"
+          element={<ProtectedRoute element={<ContentRepo />} />}
+        />
+        <Route
+          path="/viewmyexperience/:id"
+          element={<ProtectedRoute element={<ViewMyExperience />} />}
+        />
+        <Route
+          path="/teacherDashboard"
+          element={<ProtectedRoute element={<TeacherDashboard />} />}
+        />
+        <Route
+          path="/_dashboard"
+          element={<ProtectedRoute element={<SuperadminDashboard />} />}
+        />
+        <Route
+          path="/client"
+          element={<ProtectedRoute element={<Client />} />}
+        />
+        <Route
+          path="/subscription"
+          element={<ProtectedRoute element={<Subscription />} />}
+        />
+        <Route
+          path="/client/:id"
+          element={<ProtectedRoute element={<ViewClient />} />}
+        />
+        <Route path="/roles" element={<ProtectedRoute element={<Roles />} />} />
+        <Route
+          path="/unity"
+          element={<ProtectedRoute element={<ViewFrameModel />} />}
+        />
+        <Route
+          path="/AddExperience"
+          element={<ProtectedRoute element={<AddMyExperience />} />}
+        />
+        <Route
+          path="/devicemanagement"
+          element={<ProtectedRoute element={<DeviceManagement />} />}
+        />
+        <Route
+          path="/teachermanagement"
+          element={<ProtectedRoute element={<TeacherManagement />} />}
+        />
+        <Route
+          path="/studentmanagement"
+          element={<ProtectedRoute element={<StudentManagement />} />}
+        />
 
         <Route path="/login" element={<Login />} />
       </Routes>
