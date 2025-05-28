@@ -195,7 +195,7 @@ const Video = ({ searchValue }) => {
     formData.append("videoFile", file);
     formData.append("title", title);
     formData.append("description", description);
-    tags.forEach((tag) => formData.append("tags[]", tag.trim()));
+    formData.append("tags[]", value.tags);
     formData.append("typeOfVideo", value.typeOfVideo);
     // formData.append("thumbnailFile", file);
     setUploading(true);
