@@ -7,19 +7,19 @@ import ContentWrapper from "../../components/ContentWrapper";
 import { FaChevronLeft } from "react-icons/fa";
 
 const loaderUrl = new URL(
-  "../../../public/assets/WEBGLbuild/Build89.loader.js",
+  "../../../public/assets/WEBGLbuild/Build90.loader.js",
   import.meta.url
 ).href;
 const dataUrl = new URL(
-  "../../../public/assets/WEBGLbuild/Build89.data.unityweb",
+  "../../../public/assets/WEBGLbuild/Build90.data.unityweb",
   import.meta.url
 ).href;
 const frameworkUrl = new URL(
-  "../../../public/assets/WEBGLbuild/Build89.framework.js.unityweb",
+  "../../../public/assets/WEBGLbuild/Build90.framework.js.unityweb",
   import.meta.url
 ).href;
 const codeUrl = new URL(
-  "../../../public/assets/WEBGLbuild/Build89.wasm.unityweb",
+  "../../../public/assets/WEBGLbuild/Build90.wasm.unityweb",
   import.meta.url
 ).href;
 
