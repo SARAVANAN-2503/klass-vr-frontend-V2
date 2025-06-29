@@ -18,6 +18,7 @@ import ThemeConfig from "../../../../utils/ThemeConfig";
 import excelsample from "../../../../assets/sampleTeacher.xlsx";
 import download_icon from "../../../../assets/icons/download.svg";
 import FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 
 const TeacherManagement = () => {
   const [teachers, setTeachers] = useState([]);
@@ -179,6 +180,7 @@ const TeacherManagement = () => {
         setExportLoader(false);
       });
   };
+
   const handleImport = async () => {
     const formData = new FormData();
 
@@ -187,11 +189,36 @@ const TeacherManagement = () => {
     setImportLoader(true);
     await ImportTeacher(formData)
       .then((res) => {
+        console.log(res);
         message.success("Teachers imported successfully!");
         handleRefresh();
       })
       .catch((err) => {
         console.error(err);
+        if (err?.response?.data?.message) {
+          if (err?.response?.data?.message.startsWith("The following emails already exist")) {
+            const existingEmails = err?.response?.data?.message
+              .split("The following emails already exist:")[1]
+              .split(",")
+              .map((dup) => dup.trim());
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.json_to_sheet(existingEmails.map((email) => ({ Email: email })));
+
+            // Add worksheet to workbook
+            XLSX.utils.book_append_sheet(wb, ws, "Duplicate Emails");
+
+            // Generate and download file
+            const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+            const blob = new Blob([excelBuffer], {
+              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
+            FileSaver.saveAs(blob, "duplicate_teachers_emails.xlsx");
+
+            message.info("Duplicate emails have been exported to Excel. Please check and upload again.");
+            return;
+          }
+        }
         message.error("Failed to import teachers");
       })
       .finally(() => {

@@ -18,10 +18,7 @@ const ConductedTable = ({ data, loading }) => {
         throw new Error("No base64 string received from the server.");
       }
 
-      const blob = base64ToBlob(
-        base64Response,
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      );
+      const blob = base64ToBlob(base64Response, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
       FileSaver.saveAs(blob, "students.xlsx");
       message.success("Exported successfully!");
     } catch (error) {
@@ -32,9 +29,7 @@ const ConductedTable = ({ data, loading }) => {
   };
 
   const base64ToBlob = (base64, contentType = "", sliceSize = 512) => {
-    const base64Data = base64.includes("base64,")
-      ? base64.split("base64,")[1]
-      : base64;
+    const base64Data = base64.includes("base64,") ? base64.split("base64,")[1] : base64;
 
     const byteCharacters = atob(base64Data);
     const byteArrays = [];
@@ -49,6 +44,15 @@ const ConductedTable = ({ data, loading }) => {
     }
 
     return new Blob(byteArrays, { type: contentType });
+  };
+  const convertToMinutesAndSeconds = (decimalHours) => {
+    const totalSeconds = Math.round(decimalHours * 60 * 60);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    const pad = (n) => n.toString().padStart(2, "0");
+
+    return `${pad(minutes)}:${pad(seconds)}`;
   };
 
   const columns = useMemo(
@@ -77,6 +81,7 @@ const ConductedTable = ({ data, loading }) => {
         align: "left",
         dataIndex: "classConductedHours",
         key: "classConductedHours",
+        render: (text) => <span>{text ? convertToMinutesAndSeconds(parseFloat(text)) : "-"}</span>,
       },
       {
         title: "Status",
@@ -103,7 +108,7 @@ const ConductedTable = ({ data, loading }) => {
         render: (text) => moment(text).format("D-MMM-YYYY"),
       },
     ],
-    []
+    [],
   );
 
   const expandedColumns = useMemo(
@@ -133,7 +138,7 @@ const ConductedTable = ({ data, loading }) => {
         render: (text) => text || "N/A",
       },
     ],
-    []
+    [],
   );
 
   const expandedRowRender = (record) => {
@@ -159,15 +164,9 @@ const ConductedTable = ({ data, loading }) => {
         defaultExpandedRowKeys: ["0"],
         expandIcon: ({ expanded, onExpand, record }) =>
           expanded ? (
-            <MinusOutlined
-              onClick={(e) => onExpand(record, e)}
-              className="text-black"
-            />
+            <MinusOutlined onClick={(e) => onExpand(record, e)} className="text-black" />
           ) : (
-            <PlusOutlined
-              onClick={(e) => onExpand(record, e)}
-              className="text-black"
-            />
+            <PlusOutlined onClick={(e) => onExpand(record, e)} className="text-black" />
           ),
       }}
       loading={loading}

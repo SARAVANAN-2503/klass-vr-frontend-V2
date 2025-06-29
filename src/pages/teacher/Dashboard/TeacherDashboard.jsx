@@ -309,7 +309,7 @@ const TeacherDashboard = () => {
             allowClear
             onChange={handleGradeChange}
           >
-            {data.map((grade) => (
+            {Array.from(new Map(data.map((item) => [item.gradeID, item])).values()).map((grade) => (
               <Option
                 key={grade.gradeID}
                 value={grade.gradeID}

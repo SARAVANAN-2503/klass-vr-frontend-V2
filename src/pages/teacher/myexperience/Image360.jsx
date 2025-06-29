@@ -1,5 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Col, Collapse, Row, Typography, Spin, Card, Input, Select, Upload, Form, Space, Radio, Image, ConfigProvider } from "antd";
+import {
+  Col,
+  Collapse,
+  Row,
+  Typography,
+  Spin,
+  Card,
+  Input,
+  Select,
+  Upload,
+  Form,
+  Space,
+  Radio,
+  Image,
+  ConfigProvider,
+} from "antd";
 import { Button, Modal } from "antd";
 import { GetImage, GetTeacherImageTag, PostImage } from "../../../services/Index";
 import TextArea from "antd/es/input/TextArea";
@@ -122,6 +137,39 @@ const Image360 = ({ content, _edit, setContent, addLoader, handleBack, handleClo
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleChange = (value, field, index) => {
+    setDataValue((prevState) => {
+      const newDataValue = [...prevState];
+      newDataValue[index] = {
+        ...newDataValue[index],
+        [field]: value,
+      };
+      return newDataValue;
+    });
+  };
+
+  const handleRemovefile = (index) => {
+    // Logic to handle file removal
+    const updatedContent = [...dataValue];
+    updatedContent[index] = {
+      ...updatedContent[index],
+      imageFile: null,
+      readyToUpload: false,
+    };
+    setDataValue(updatedContent);
+  };
+
+
+  const handleFile = (file) => {
+    const updatedContent = [...dataValue];
+    updatedContent[0] = {
+      ...updatedContent[0],
+      imageFile: file,
+      readyToUpload: true,
+    };
+    setDataValue(updatedContent);
   };
 
   // Effects

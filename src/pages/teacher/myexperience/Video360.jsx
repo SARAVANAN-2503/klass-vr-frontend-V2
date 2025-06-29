@@ -20,17 +20,9 @@ import {
   ConfigProvider,
 } from "antd";
 import { Button, Modal } from "antd";
-import {
-  GetTeacherVideoTag,
-  GetVideo,
-  PostVideo,
-} from "../../../services/Index";
+import { GetTeacherVideoTag, GetVideo, PostVideo } from "../../../services/Index";
 import TextArea from "antd/es/input/TextArea";
-import {
-  EyeOutlined,
-  LoadingOutlined,
-  UploadOutlined,
-} from "@ant-design/icons";
+import { EyeOutlined, LoadingOutlined, UploadOutlined } from "@ant-design/icons";
 import "./style.css";
 import ReactPlayer from "react-player";
 import subjectOptions from "../../../json/subject";
@@ -119,29 +111,23 @@ const Video360 = ({
       content.videoDetails[0] &&
       content.videoDetails[0]?.videoDetail
       ? content.videoDetails[0]?.videoDetail.videoURL
-      : null
+      : null,
   );
   const formatDuration = (duration) => {
     const hours = Math.floor(duration / 3600);
     const minutes = Math.floor((duration % 3600) / 60);
     const seconds = Math.floor(duration % 60);
-    return `${hours > 0 ? hours + " Hr " : ""}${
-      minutes > 0 ? minutes + " Min " : ""
-    }${seconds} Sec`;
+    return `${hours > 0 ? hours + " Hr " : ""}${minutes > 0 ? minutes + " Min " : ""}${seconds} Sec`;
   };
   const [YoutueVideoFlag, setYoutueVideoFlag] = useState(false);
   const [videoDuration, setVideoDuration] = useState(null);
   const [youtubeVideo, setYoutubeVideo] = useState(content.youTubeUrl);
   const [loading, setLoading] = useState(false);
-  const [showCollapse, setShowCollapse] = useState(
-    content.videoDetails && content.videoDetails.length > 0
-  );
+  const [showCollapse, setShowCollapse] = useState(content.videoDetails && content.videoDetails.length > 0);
   const [modelValue, setModelValue] = useState([]);
   const [open, setOpen] = useState(false);
   const [openModel, setOpenModel] = useState(false);
-  const [showYoutubeCollapse, setShowYoutubeCollapse] = useState(
-    content.youTubeUrl != "" ? true : false
-  );
+  const [showYoutubeCollapse, setShowYoutubeCollapse] = useState(content.youTubeUrl != "" ? true : false);
   const [currentPage, setCurrentPage] = useState(1);
   const [loadingVideos, setLoadingVideos] = useState(true);
   const pageSize = 10;
@@ -155,14 +141,9 @@ const Video360 = ({
       content.videoDetails[0]?.script
         ? content.videoDetails[0]?.script
         : "",
-    videoSound: content.videoDetails[0]?.videoSound
-      ? content.videoDetails[0]?.videoSound
-      : "",
+    videoSound: content.videoDetails[0]?.videoSound ? content.videoDetails[0]?.videoSound : "",
     VideoId:
-      content.videoDetails &&
-      content.videoDetails.length > 0 &&
-      content.videoDetails[0] &&
-      content.videoDetails[0]
+      content.videoDetails && content.videoDetails.length > 0 && content.videoDetails[0] && content.videoDetails[0]
         ? content.videoDetails[0]?.VideoId
         : "",
   });
@@ -301,13 +282,7 @@ const Video360 = ({
       setReq(false);
       const [minutes, seconds] = value.split(":").map(Number);
 
-      if (
-        isNaN(minutes) ||
-        isNaN(seconds) ||
-        minutes < 0 ||
-        seconds < 0 ||
-        seconds >= 60
-      ) {
+      if (isNaN(minutes) || isNaN(seconds) || minutes < 0 || seconds < 0 || seconds >= 60) {
         message.error("Invalid time format");
         return;
       }
@@ -378,7 +353,7 @@ const Video360 = ({
     formData.append("videoFile", file);
     formData.append("title", title);
     formData.append("description", description);
-    formData.append("tags[]", value.tags);
+    tags.forEach((tag) => formData.append("tags[]", tag.trim()));
     formData.append("typeOfVideo", dataValue[0].typeOfVideo);
     setLoading(true);
     try {
@@ -411,10 +386,7 @@ const Video360 = ({
   };
 
   useEffect(() => {
-    if (
-      dataValue[0].videoFile &&
-      dataValue[0].videoFile.type?.includes("video/")
-    ) {
+    if (dataValue[0].videoFile && dataValue[0].videoFile.type?.includes("video/")) {
       const video = document.createElement("video");
       video.src = URL.createObjectURL(dataValue[0].videoFile);
       video.onloadedmetadata = () => {
@@ -443,9 +415,7 @@ const Video360 = ({
 
   useEffect(() => {
     // Create a new object excluding empty key-value pairs
-    const filteredSearchValue = Object.fromEntries(
-      Object.entries(searchValue).filter(([key, value]) => value !== "")
-    );
+    const filteredSearchValue = Object.fromEntries(Object.entries(searchValue).filter(([key, value]) => value !== ""));
 
     if (Object.keys(filteredSearchValue).length > 0) {
       GetVideo(filteredSearchValue)
@@ -512,9 +482,7 @@ const Video360 = ({
     const endTime = dayjs(content.youTubeEndTimer, "mm:ss");
 
     if (startTime.isSameOrAfter(endTime)) {
-      return Promise.reject(
-        "Start time must be less than end time and cannot be the same."
-      );
+      return Promise.reject("Start time must be less than end time and cannot be the same.");
     }
     return Promise.resolve();
   };
@@ -535,9 +503,7 @@ const Video360 = ({
                 content.videoDetails[0]?.script
                   ? content.videoDetails[0]?.script
                   : "",
-              videoSound: content.videoDetails[0]?.videoSound
-                ? content.videoDetails[0]?.videoSound
-                : "",
+              videoSound: content.videoDetails[0]?.videoSound ? content.videoDetails[0]?.videoSound : "",
             }}
             onFinish={handleSave}
             autoComplete="off"
@@ -556,9 +522,7 @@ const Video360 = ({
                   ]}
                 >
                   <Radio.Group
-                    onChange={(e) =>
-                      handleChangeOption(e.target.value, "videoSound", 0)
-                    }
+                    onChange={(e) => handleChangeOption(e.target.value, "videoSound", 0)}
                     value={contentValue.videoSound}
                     size="large"
                   >
@@ -577,8 +541,7 @@ const Video360 = ({
                     },
                     {
                       min: 5,
-                      message:
-                        "Character script must be at least 5 characters!",
+                      message: "Character script must be at least 5 characters!",
                     },
                   ]}
                 >
@@ -586,9 +549,7 @@ const Video360 = ({
                     name="script"
                     value={contentValue.script}
                     disabled={!scriptValue1}
-                    onChange={(e) =>
-                      handleChangeOption(e.target.value, "script", 0)
-                    }
+                    onChange={(e) => handleChangeOption(e.target.value, "script", 0)}
                     placeholder="Please enter your Video script"
                     autoSize={{ minRows: 11, maxRows: 11 }}
                     className="mb-2"
@@ -626,11 +587,7 @@ const Video360 = ({
                   <>
                     <Col span={24}>
                       {/* <Typography>Video Preview:</Typography> */}
-                      <video
-                        controls
-                        style={{ width: "100%" }}
-                        ref={videoPlayerRef}
-                      >
+                      <video controls style={{ width: "100%" }} ref={videoPlayerRef}>
                         <source src={videoPreviewUrl} type="video/mp4" />
                       </video>
                       {/* <ReactPlayer
@@ -664,12 +621,7 @@ const Video360 = ({
             {_edit ? (
               <div className="fixed top-[-38px] right-[10px]">
                 <Form.Item className="m-0">
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    loading={addLoader}
-                    className="form-button"
-                  >
+                  <Button type="primary" htmlType="submit" loading={addLoader} className="form-button">
                     {_edit ? "Save" : "Continue"}
                   </Button>
                 </Form.Item>
@@ -693,11 +645,7 @@ const Video360 = ({
                     Back
                   </Button>
                   <Form.Item>
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      loading={addLoader}
-                    >
+                    <Button type="primary" htmlType="submit" loading={addLoader}>
                       Save & Next
                     </Button>
                   </Form.Item>
@@ -711,9 +659,7 @@ const Video360 = ({
   ];
   useEffect(() => {
     form.setFieldsValue({
-      youTubeVideoScript: content.youTubeVideoAudio
-        ? content.youTubeVideoScript
-        : null,
+      youTubeVideoScript: content.youTubeVideoAudio ? content.youTubeVideoScript : null,
     });
     form.validateFields(["youTubeVideoScript"]);
   }, [content.youTubeVideoAudio]);
@@ -729,10 +675,7 @@ const Video360 = ({
             initialValues={{
               remember: true,
               youTubeVideoAudio: content.youTubeVideoAudio,
-              youTubeVideoScript:
-                content.youTubeVideoAudio === true
-                  ? content.youTubeVideoScript
-                  : null,
+              youTubeVideoScript: content.youTubeVideoAudio === true ? content.youTubeVideoScript : null,
               youTubeStartTimer: content.youTubeStartTimer,
               youTubeEndTimer: content.youTubeEndTimer,
             }}
@@ -766,9 +709,7 @@ const Video360 = ({
                   ]}
                 >
                   <Radio.Group
-                    onChange={(e) =>
-                      handleURLChange(e.target.value, "youTubeVideoAudio")
-                    }
+                    onChange={(e) => handleURLChange(e.target.value, "youTubeVideoAudio")}
                     value={content.youTubeVideoAudio}
                   >
                     <Radio value={true}>Script Audio</Radio>
@@ -786,22 +727,15 @@ const Video360 = ({
                     },
                     {
                       min: 5,
-                      message:
-                        "Character script must be at least 5 characters!",
+                      message: "Character script must be at least 5 characters!",
                     },
                   ]}
                 >
                   <Input.TextArea
                     name="youTubeVideoScript"
-                    value={
-                      content.youTubeVideoAudio === true
-                        ? content.youTubeVideoScript
-                        : null
-                    }
+                    value={content.youTubeVideoAudio === true ? content.youTubeVideoScript : null}
                     disabled={!scriptValue}
-                    onChange={(e) =>
-                      handleURLChange(e.target.value, "youTubeVideoScript")
-                    }
+                    onChange={(e) => handleURLChange(e.target.value, "youTubeVideoScript")}
                     placeholder="Please enter your Video script"
                     autoSize={{ minRows: 11, maxRows: 11 }}
                     className="mb-2"
@@ -814,18 +748,13 @@ const Video360 = ({
                 <Form.Item
                   label="Start Time"
                   name="youTubeStartTimer"
-                  rules={[
-                    { required: req, message: "Please select Start Time!" },
-                    { validator: validateTimes },
-                  ]}
+                  rules={[{ required: req, message: "Please select Start Time!" }, { validator: validateTimes }]}
                 >
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <TimePicker
                       ampm={false} // Hide AM/PM
                       value={dayjs(content.youTubeStartTimer, "mm:ss")}
-                      onChange={(time) =>
-                        handleURLChange(time, "youTubeStartTimer")
-                      }
+                      onChange={(time) => handleURLChange(time, "youTubeStartTimer")}
                       views={["minutes", "seconds"]}
                       format="mm:ss"
                       minutesStep={1}
@@ -838,17 +767,12 @@ const Video360 = ({
                 <Form.Item
                   label="End Time"
                   name="youTubeEndTimer"
-                  rules={[
-                    { required: req1, message: "Please select End Time!" },
-                    { validator: validateTimes },
-                  ]}
+                  rules={[{ required: req1, message: "Please select End Time!" }, { validator: validateTimes }]}
                 >
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <TimePicker
                       value={dayjs(content.youTubeEndTimer, "mm:ss")}
-                      onChange={(time) =>
-                        handleURLChange(time, "youTubeEndTimer")
-                      }
+                      onChange={(time) => handleURLChange(time, "youTubeEndTimer")}
                       views={["minutes", "seconds"]}
                       format="mm:ss"
                       renderInput={(params) => <TextField {...params} />}
@@ -881,17 +805,10 @@ const Video360 = ({
                   className="mr-5"
                   onClick={() => {
                     if (videoPlayerRef.current) {
-                      const internalPlayer =
-                        videoPlayerRef.current.getInternalPlayer();
-                      if (
-                        internalPlayer &&
-                        typeof internalPlayer.pauseVideo === "function"
-                      ) {
+                      const internalPlayer = videoPlayerRef.current.getInternalPlayer();
+                      if (internalPlayer && typeof internalPlayer.pauseVideo === "function") {
                         internalPlayer.pauseVideo(); // Use YouTube API's pauseVideo method
-                      } else if (
-                        internalPlayer &&
-                        typeof internalPlayer.pause === "function"
-                      ) {
+                      } else if (internalPlayer && typeof internalPlayer.pause === "function") {
                         internalPlayer.pause(); // Use HTML5 video element's pause method
                       }
                     }
@@ -981,17 +898,10 @@ const Video360 = ({
                 size="large"
                 onClick={() => {
                   if (videoPlayerRef.current) {
-                    const internalPlayer =
-                      videoPlayerRef.current.getInternalPlayer();
-                    if (
-                      internalPlayer &&
-                      typeof internalPlayer.pauseVideo === "function"
-                    ) {
+                    const internalPlayer = videoPlayerRef.current.getInternalPlayer();
+                    if (internalPlayer && typeof internalPlayer.pauseVideo === "function") {
                       internalPlayer.pauseVideo(); // Use YouTube API's pauseVideo method
-                    } else if (
-                      internalPlayer &&
-                      typeof internalPlayer.pause === "function"
-                    ) {
+                    } else if (internalPlayer && typeof internalPlayer.pause === "function") {
                       internalPlayer.pause(); // Use HTML5 video element's pause method
                     }
                   }
@@ -1000,12 +910,7 @@ const Video360 = ({
               >
                 Previous
               </Button>
-              <Button
-                type="primary"
-                onClick={() => setActiveKey("4")}
-                size="large"
-                className="form-button skip-button"
-              >
+              <Button type="primary" onClick={() => setActiveKey("4")} size="large" className="form-button skip-button">
                 Skip
               </Button>
             </div>
@@ -1019,13 +924,9 @@ const Video360 = ({
           open={open}
           onCancel={handleCancel}
           footer={null}
-          className={`custom-close-button ${
-            selectedTheme === "dark" ? "custom-modal" : ""
-          }`}
+          className={`custom-close-button ${selectedTheme === "dark" ? "custom-modal" : ""}`}
         >
-          <Typography className="text-xl text-center pt-10">
-            Add Video Repo
-          </Typography>
+          <Typography className="text-xl text-center pt-10">Add Video Repo</Typography>
           <div className="flex justify-center">
             <Form
               name="basic"
@@ -1044,9 +945,7 @@ const Video360 = ({
               autoComplete="off"
               form={form}
             >
-              <Typography className="text-left text-sm uppercase  mt-3 mb-1">
-                Title
-              </Typography>
+              <Typography className="text-left text-sm uppercase  mt-3 mb-1">Title</Typography>
               <Form.Item
                 name={`title-${0}`}
                 rules={[
@@ -1092,9 +991,7 @@ const Video360 = ({
                 ))}
               </Select>
             </Form.Item> */}
-              <Typography className="text-left uppercase  mb-1">
-                Description
-              </Typography>
+              <Typography className="text-left uppercase  mb-1">Description</Typography>
               <Form.Item
                 name={`description-${0}`}
                 rules={[
@@ -1107,19 +1004,12 @@ const Video360 = ({
                 <TextArea
                   className=" resize-none p-3"
                   placeholder="Please enter the description"
-                  onChange={(e) =>
-                    handleChange(e.target.value, "description", 0)
-                  }
+                  onChange={(e) => handleChange(e.target.value, "description", 0)}
                 />
               </Form.Item>
 
               <div className="w-full h-30 border-dashed rounded-md flex justify-center border-gray-200 pt-5 mb-2">
-                <Form.Item
-                  name={`videoFile-${0}`}
-                  rules={[
-                    { required: true, message: "Please Enter videoFile!" },
-                  ]}
-                >
+                <Form.Item name={`videoFile-${0}`} rules={[{ required: true, message: "Please Enter videoFile!" }]}>
                   <Upload
                     name={`videoFile-${0}`}
                     listType="picture"
@@ -1130,12 +1020,9 @@ const Video360 = ({
                     maxCount={1}
                     accept=".mp4,.mov,.mkv,.avi"
                     onRemove={() => handleRemovefile(0)}
-                    fileList={
-                      dataValue[0].videoFile ? [dataValue[0].videoFile] : []
-                    }
+                    fileList={dataValue[0].videoFile ? [dataValue[0].videoFile] : []}
                   >
-                    {(dataValue[0].videoFile == "" ||
-                      dataValue[0].videoFile == null) && (
+                    {(dataValue[0].videoFile == "" || dataValue[0].videoFile == null) && (
                       <Button className=" border-none rounded-md">
                         Upload <UploadOutlined />
                       </Button>
@@ -1146,51 +1033,24 @@ const Video360 = ({
               <Typography className="text-left text-gray-500 text-[12px] mb-0 pl-2">
                 Note: Upload 360 Video only
               </Typography>
-              <Typography className="text-left uppercase  relative top-5 mb-0">
-                Type of Video
-              </Typography>
+              <Typography className="text-left uppercase  relative top-5 mb-0">Type of Video</Typography>
               <Row size={24} className="flex mt-0">
                 <Radio.Group
                   value={dataValue[0].typeOfVideo}
-                  onChange={(e) =>
-                    handleChange(e.target.value, "typeOfVideo", 0)
-                  }
+                  onChange={(e) => handleChange(e.target.value, "typeOfVideo", 0)}
                   className="flex p-0"
                 >
-                  <Radio
-                    value={"stereoscopic-side-to-side"}
-                    className="flex flex-col-reverse gap-3 w-[172px]"
-                  >
-                    <Image
-                      src={StereoscopicSideToSide}
-                      width={170}
-                      height={113}
-                    />
-                    <Typography className="text-center mb-0 capitalize">
-                      stereoscopic side-side
-                    </Typography>
+                  <Radio value={"stereoscopic-side-to-side"} className="flex flex-col-reverse gap-3 w-[172px]">
+                    <Image src={StereoscopicSideToSide} width={170} height={113} />
+                    <Typography className="text-center mb-0 capitalize">stereoscopic side-side</Typography>
                   </Radio>
-                  <Radio
-                    value={"stereoscopic-top-to-bottom"}
-                    className="flex flex-col-reverse gap-3 w-[172px]"
-                  >
-                    <Image
-                      src={StereoscopicTopToBottom}
-                      width={170}
-                      height={113}
-                    />
-                    <Typography className="text-center mb-0 capitalize">
-                      stereoscopic top-bottom
-                    </Typography>
+                  <Radio value={"stereoscopic-top-to-bottom"} className="flex flex-col-reverse gap-3 w-[172px]">
+                    <Image src={StereoscopicTopToBottom} width={170} height={113} />
+                    <Typography className="text-center mb-0 capitalize">stereoscopic top-bottom</Typography>
                   </Radio>
-                  <Radio
-                    value={"monoscopic"}
-                    className="flex flex-col-reverse gap-3 w-[172px]"
-                  >
+                  <Radio value={"monoscopic"} className="flex flex-col-reverse gap-3 w-[172px]">
                     <Image src={MonoscopicImg} width={170} height={113} />
-                    <Typography className="text-center mb-0 capitalize">
-                      monoscopic
-                    </Typography>
+                    <Typography className="text-center mb-0 capitalize">monoscopic</Typography>
                   </Radio>
                 </Radio.Group>
               </Row>
@@ -1201,13 +1061,7 @@ const Video360 = ({
                 }}
                 className="mt-5"
               >
-                <Button
-                  type="primary"
-                  className="rounded-xl"
-                  size="large"
-                  loading={loading}
-                  htmlType="submit"
-                >
+                <Button type="primary" className="rounded-xl" size="large" loading={loading} htmlType="submit">
                   Submit <img src={rightArrow} alt="right arrow" width="18px" />
                 </Button>
               </Form.Item>
@@ -1248,16 +1102,11 @@ const Video360 = ({
             </div>
             {loadingVideos ? (
               <div style={{ textAlign: "center" }}>
-                <Spin
-                  indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
-                />
+                <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
               </div>
             ) : (
               <>
-                <div
-                  ref={scrollRef}
-                  className="flex gap-4 overflow-hidden my-4"
-                >
+                <div ref={scrollRef} className="flex gap-4 overflow-hidden my-4">
                   {videoList.map((val, index) => (
                     <div style={style} key={index}>
                       <Card
@@ -1265,16 +1114,9 @@ const Video360 = ({
                         onClick={() => handleVideoSelect(val)}
                         className="h-[280px] w-[400px] flex flex-col border-gray-300 ml-4"
                       >
-                        <img
-                          alt="thumbnailUrl"
-                          src={val.thumbnail}
-                          style={imgStyle}
-                          className="rounded-lg"
-                        />
+                        <img alt="thumbnailUrl" src={val.thumbnail} style={imgStyle} className="rounded-lg" />
                         <div className="flex justify-between mt-3">
-                          <Typography className="font-bold">
-                            {val.title}
-                          </Typography>
+                          <Typography className="font-bold">{val.title}</Typography>
                           <Button
                             type="primary"
                             size="small"
@@ -1314,18 +1156,14 @@ const Video360 = ({
           width={800}
         >
           <div className="p-5">
-            <Typography className="text-xl p-4 m-0">
-              Select Youtube URL Video
-            </Typography>
+            <Typography className="text-xl p-4 m-0">Select Youtube URL Video</Typography>
             <Input
               name="youTubeUrl"
               placeholder="Please enter the Youtube Url"
               value={content.youTubeUrl}
               prefix={<SearchOutlined />}
               onChange={(e) => handleURLChange(e.target.value, "youTubeUrl", 0)}
-              onPaste={(e) =>
-                handleYoutubePaste(e.clipboardData.getData("text"))
-              } // Handle paste event
+              onPaste={(e) => handleYoutubePaste(e.clipboardData.getData("text"))} // Handle paste event
               className="mb-10 p-[10px]"
             />
             <Col span={24}>
@@ -1343,11 +1181,7 @@ const Video360 = ({
             </Col>
             <Col span={24}>
               <div className="mt-5 flex justify-end">
-                <Button
-                  type="default"
-                  className="mr-5"
-                  onClick={handleCloseModal}
-                >
+                <Button type="default" className="mr-5" onClick={handleCloseModal}>
                   Close
                 </Button>
                 <Button
@@ -1355,17 +1189,10 @@ const Video360 = ({
                   disabled={youtubesubmit}
                   onClick={() => {
                     if (videoPlayerRef.current) {
-                      const internalPlayer =
-                        videoPlayerRef.current.getInternalPlayer();
-                      if (
-                        internalPlayer &&
-                        typeof internalPlayer.pauseVideo === "function"
-                      ) {
+                      const internalPlayer = videoPlayerRef.current.getInternalPlayer();
+                      if (internalPlayer && typeof internalPlayer.pauseVideo === "function") {
                         internalPlayer.pauseVideo(); // Use YouTube API's pauseVideo method
-                      } else if (
-                        internalPlayer &&
-                        typeof internalPlayer.pause === "function"
-                      ) {
+                      } else if (internalPlayer && typeof internalPlayer.pause === "function") {
                         internalPlayer.pause(); // Use HTML5 video element's pause method
                       }
                     }

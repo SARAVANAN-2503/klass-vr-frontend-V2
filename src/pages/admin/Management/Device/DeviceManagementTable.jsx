@@ -1,61 +1,80 @@
 import { DeleteOutlined, EditOutlined, SaveOutlined } from "@ant-design/icons";
-import { Button, Flex, Popconfirm, Switch, Table, Tooltip, message, Spin, InputNumber, Image } from "antd";
+import { Button, Flex, Popconfirm, Switch, Table, Tooltip, message, Spin, InputNumber } from "antd";
 import PropTypes from "prop-types";
 import { PatchStatus } from "../../../../services/Index";
-import { useState, useCallback } from "react";
-import edit from "../../../../assets/icons/edit.svg";
-import { useAppSelector } from "../../../../store/config/redux";
+import { useState } from "react";
 
 const DeviceManagementTable = ({ data, loading, handleDelete, handleRefresh }) => {
-  const selectedTheme = useAppSelector((state) => state.theme.theme);
   const [editingRecord, setEditingRecord] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [switchLoadingId, setSwitchLoadingId] = useState(null);
+  const [localStatusMap, setLocalStatusMap] = useState({}); // Optimistic toggle state
 
-  const handleStatus = useCallback(
-    async (id, data) => {
-      try {
-        await PatchStatus(id, data);
-        message.success("Device updated successfully!");
-        handleRefresh();
-      } catch (error) {
-        console.error("Error updating Device:", error);
-        message.error(error.response?.data?.message || "Failed to update device");
-      }
-    },
-    [handleRefresh],
-  );
+  const handleEdit = (record) => {
+    setEditingRecord({ ...record });
+  };
 
-  const handleInputChange = useCallback((value, key) => {
+  const handleInputChange = (value, key) => {
     setEditingRecord((prev) => ({
       ...prev,
       [key]: value,
     }));
-  }, []);
+  };
 
-  const handleSave = useCallback(
-    async (record) => {
-      setSaving(true);
-      try {
-        await PatchStatus(record._id, { uniqueID: record.uniqueID });
-        message.success("Device updated successfully!");
-        handleRefresh();
-        setEditingRecord(null);
-      } catch (error) {
-        console.error("Error updating Device:", error);
-        message.error(error.response?.data?.message || "Failed to update device");
-      } finally {
-        setSaving(false);
-      }
-    },
-    [handleRefresh],
-  );
+  const handleSave = async (record) => {
+    setSaving(true);
+    try {
+      const data1 = { uniqueID: record.uniqueID };
+      await PatchStatus(record._id, data1);
+      message.success("Device updated successfully!");
+      handleRefresh();
+      setEditingRecord(null);
+    } catch (error) {
+      message.error(error.response?.data?.message || "Failed to update device");
+      console.error("Error updating Device:", error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleStatusToggle = async (record, newStatus) => {
+    const id = record._id;
+    setSwitchLoadingId(id);
+    setLocalStatusMap((prev) => ({
+      ...prev,
+      [id]: newStatus,
+    }));
+
+    try {
+      await PatchStatus(id, { isActive: newStatus });
+      message.success("Device status updated!");
+      handleRefresh();
+    } catch (error) {
+      message.error(error.response?.data?.message || "Failed to update status");
+      // Revert if error
+      setLocalStatusMap((prev) => ({
+        ...prev,
+        [id]: !newStatus,
+      }));
+    } finally {
+      setSwitchLoadingId(null);
+    }
+  };
+
+  const normalizeID = (val) => val?.toString().replace(/^0+/, "") || "";
+
+  const isDuplicateUniqueID = (value, currentId) => {
+    const normalizedValue = normalizeID(value);
+    return data.some((item) => {
+      const normalizedItemID = normalizeID(item.uniqueID);
+      return item._id !== currentId && normalizedItemID === normalizedValue;
+    });
+  };
 
   const columns = [
     {
       title: "Device ID",
       dataIndex: "uniqueID",
-      width: "15%",
-      align: "left",
       key: "uniqueID",
       sorter: (a, b) => a.uniqueID.localeCompare(b.uniqueID),
       render: (text, record) =>
@@ -64,6 +83,7 @@ const DeviceManagementTable = ({ data, loading, handleDelete, handleRefresh }) =
             className="w-full"
             value={editingRecord.uniqueID}
             onChange={(value) => handleInputChange(value.toString(), "uniqueID")}
+            status={isDuplicateUniqueID(editingRecord.uniqueID, editingRecord._id) ? "error" : ""}
           />
         ) : (
           text
@@ -72,22 +92,46 @@ const DeviceManagementTable = ({ data, loading, handleDelete, handleRefresh }) =
     {
       title: "Status",
       key: "isActive",
-      width: "70%",
-      align: "left",
-      render: (_, record) => (
-        <Spin spinning={loading}>
-          <Switch checked={record.isActive} onChange={(checked) => handleStatus(record._id, { isActive: checked })} />
-        </Spin>
-      ),
+      align: "center",
+      render: (_, record) => {
+        const currentStatus = localStatusMap[record._id] !== undefined ? localStatusMap[record._id] : record.isActive;
+
+        return (
+          // <Spin spinning={switchLoadingId === record._id}>
+            <Switch checked={currentStatus} onChange={(checked) => handleStatusToggle(record, checked)} loading={switchLoadingId === record._id} />
+          // </Spin>
+        );
+      },
     },
     {
       title: "Action",
       key: "id",
-      fixed: "right",
-      width: "15%",
       align: "center",
       render: (_, record) => (
         <Flex wrap="wrap" gap="small" justify="center">
+          {editingRecord && editingRecord._id === record._id ? (
+            <Tooltip
+              title={
+                isDuplicateUniqueID(editingRecord.uniqueID, editingRecord._id)
+                  ? "This ID already exists."
+                  : "Save changes"
+              }
+            >
+              <Button
+                type="primary"
+                onClick={() => handleSave(editingRecord)}
+                icon={<SaveOutlined />}
+                loading={saving}
+                disabled={isDuplicateUniqueID(editingRecord.uniqueID, editingRecord._id)}
+              />
+            </Tooltip>
+          ) : (
+            <Tooltip placement="top" title="Edit">
+              <Button type="primary" onClick={() => handleEdit(record)}>
+                <EditOutlined />
+              </Button>
+            </Tooltip>
+          )}
           <Tooltip placement="top" title="Delete">
             <Popconfirm
               title="Delete the Device"
@@ -96,11 +140,7 @@ const DeviceManagementTable = ({ data, loading, handleDelete, handleRefresh }) =
               okText="Yes"
               cancelText="No"
             >
-              <Button
-                className="bg-transparent shadow-none"
-                type="primary"
-                icon={<DeleteOutlined className={`${selectedTheme === "dark" ? "text-white" : "text-black"}`} />}
-              />
+              <Button type="primary" icon={<DeleteOutlined />} danger />
             </Popconfirm>
           </Tooltip>
         </Flex>
@@ -110,9 +150,8 @@ const DeviceManagementTable = ({ data, loading, handleDelete, handleRefresh }) =
 
   return (
     <Table
-      rowClassName={() => "rowClassName1"}
       loading={loading}
-      className="mt-7"
+      className="mt-4"
       columns={columns}
       dataSource={data}
       pagination={{
@@ -124,9 +163,9 @@ const DeviceManagementTable = ({ data, loading, handleDelete, handleRefresh }) =
 
 DeviceManagementTable.propTypes = {
   data: PropTypes.array.isRequired,
-  handleRefresh: PropTypes.func.isRequired,
+  handleRefresh: PropTypes.func,
   loading: PropTypes.bool,
-  handleDelete: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func,
 };
 
 export default DeviceManagementTable;
